@@ -18,28 +18,28 @@ def _game_loop(env, render):
 
     if render:
         env.render()
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     while not done:
 
         actions = []
         for i, player in enumerate(env.players):
-            actions.append(env.action_space.sample())
+            actions.append(env.action_space.spaces[i].sample())
         nobs, nreward, ndone, _ = env.step(actions)
         if sum(nreward) > 0:
             print(nreward)
 
         if render:
             env.render()
-            time.sleep(0.5)
+            time.sleep(0.01)
 
         done = np.all(ndone)
     # print(env.players[0].score, env.players[1].score)
 
 
 def main(game_count=1, render=False):
-    env = gym.make("Foraging-8x8-2p-v0")
-    obs = env.reset()
+    env = gym.make("Foraging-8x8-2p-2f-v1", sight=2)
+    _ = env.reset()
 
     for episode in range(game_count):
         _game_loop(env, render)
